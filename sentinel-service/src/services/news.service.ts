@@ -50,7 +50,7 @@ export async function fetchNewsHeadlines(): Promise<NewsHeadline[]> {
       return FALLBACK_HEADLINES;
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
 
     if (!data.news || data.news.length === 0) {
       log("[INFO]", "No headlines returned -- using fallback data");
