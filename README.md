@@ -8,6 +8,15 @@
   <img src="https://img.shields.io/badge/Node.js-AI_Backend-green?style=for-the-badge&logo=node.js" alt="Node.js" />
 </div>
 
+## 🔗 Live On-Chain Verification
+**Want to see the AI Agent actually executing trades on the blockchain in real-time?** 
+
+Because the AI Agent is funded and hard-coded to make real transactions on the Stellar Testnet, you can look at the Agent's public ledger profile right now. Click below to see the AI Agent's live wallet and watch every single transaction it evaluates pop up in real-time:
+
+👉 **[View the AI Agent's Live Ledger Profile on Stellar Expert](https://stellar.expert/explorer/testnet/account/GDMNG2E6CZOCQRX3EZXDRDGCK2XVTVZNCJ3H4CPEHKSFUFVFGKN6GJ73)**
+
+*(If you let the dashboard run for a few minutes, you will see this ledger filling up with "Payment" operations every time the AI executes a trade!)*
+
 ## 📖 About The Project
 Sentinel is an autonomous, AI-driven, and purely non-custodial DeFi dashboard built natively on the Stellar network using Soroban smart contracts. It acts as an automated "Guardian" for a user's cryptocurrency portfolio. Once activated, the Sentinel AI continuously monitors global financial news via the CryptoPanic API and LLM sentiment analysis. When it detects significant market-moving events, it autonomously executes optimal trades to capture upside or protect assets—all without human intervention.
 
