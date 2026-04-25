@@ -1,3 +1,11 @@
+export interface NewsHeadline {
+  title: string;
+  source: string;
+  url: string;
+  published_at: string;
+  currencies?: string[];
+}
+
 export interface SentimentResult {
   asset: string;
   sentiment_score: number;
