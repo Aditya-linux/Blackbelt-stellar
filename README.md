@@ -20,7 +20,7 @@ Because the AI Agent is funded and hard-coded to make real transactions on the S
 ## 🧪 Validator / Judge Testing Guide
 **Want to test the platform yourself? Follow these steps:**
 1. **Onboarding:** Visit the live Vercel deployment link and fill out the Waitlist form. (This proves our seamless Next.js to Google Forms No-CORS integration).
-   * 👉 **[View Live Form Responses Here]([https://docs.google.com/forms/d/1_MTa3O0jbIq5GJE-ZuzbE8PHrPoKInZJWk14bSDkMWg/edit#responses](https://docs.google.com/spreadsheets/d/1I-17ApYCyLLkOlDM0oE6TkSvo_Vcz4sqYl3lUdYOB5c/edit?resourcekey=&gid=832346859#gid=832346859))** *(Note: Requires owner permission)*
+   * 👉 **[View Live Form Responses Here](https://docs.google.com/spreadsheets/d/1I-17ApYCyLLkOlDM0oE6TkSvo_Vcz4sqYl3lUdYOB5c/edit?resourcekey=&gid=832346859#gid=832346859)** *(Note: Requires owner permission)*
 2. **Wallet Connection:** Connect your Stellar Freighter Wallet on the testnet. You will see the UI immediately fetch and display your live XLM balances.
 3. **Activate the AI:** Scroll down to the Execution Terminal and click **"Activate Guardian"**.
 4. **Watch the Magic:** You will see the Node.js backend instantly begin scraping live Yahoo Finance news, running it through the AI sentiment engine, and streaming the results back to the frontend via WebSockets.
