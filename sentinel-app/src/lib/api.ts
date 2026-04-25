@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+let API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+if (API_BASE.endsWith("/")) API_BASE = API_BASE.slice(0, -1);
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
@@ -28,6 +29,7 @@ export const api = {
 };
 
 export function getWsUrl(): string {
-  const base = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001";
+  let base = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001";
+  if (base.endsWith("/")) base = base.slice(0, -1);
   return `${base}/ws`;
 }
