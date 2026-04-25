@@ -17,6 +17,15 @@ Because the AI Agent is funded and hard-coded to make real transactions on the S
 
 *(If you let the dashboard run for a few minutes, you will see this ledger filling up with "Payment" operations every time the AI executes a trade!)*
 
+## 🧪 Validator / Judge Testing Guide
+**Want to test the platform yourself? Follow these steps:**
+1. **Onboarding:** Visit the live Vercel deployment link and fill out the Waitlist form. (This proves our seamless Next.js to Google Forms No-CORS integration).
+   * 👉 **[View Live Form Responses Here](https://docs.google.com/forms/d/1_MTa3O0jbIq5GJE-ZuzbE8PHrPoKInZJWk14bSDkMWg/edit#responses)** *(Note: Requires owner permission)*
+2. **Wallet Connection:** Connect your Stellar Freighter Wallet on the testnet. You will see the UI immediately fetch and display your live XLM balances.
+3. **Activate the AI:** Scroll down to the Execution Terminal and click **"Activate Guardian"**.
+4. **Watch the Magic:** You will see the Node.js backend instantly begin scraping live Yahoo Finance news, running it through the AI sentiment engine, and streaming the results back to the frontend via WebSockets.
+5. **Verify the Trade:** Wait for the AI to execute a trade. It will output a transaction hash in the terminal. Copy that hash and paste it into [Stellar Expert](https://stellar.expert/explorer/testnet) to verify the real on-chain execution!
+
 ## 📖 About The Project
 Sentinel is an autonomous, AI-driven, and purely non-custodial DeFi dashboard built natively on the Stellar network using Soroban smart contracts. It acts as an automated "Guardian" for a user's cryptocurrency portfolio. Once activated, the Sentinel AI continuously monitors global financial news via the CryptoPanic API and LLM sentiment analysis. When it detects significant market-moving events, it autonomously executes optimal trades to capture upside or protect assets—all without human intervention.
 
