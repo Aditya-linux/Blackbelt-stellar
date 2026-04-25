@@ -29,15 +29,23 @@ export default function DashboardApp() {
   const [loading, setLoading] = useState(false);
 
   const toggleSentinel = async () => {
+    // Optimistic UI update: flip the switch immediately
+    const newState = !sentinelEnabled;
+    setSentinelEnabled(newState);
     setLoading(true);
+
     try {
-      if (sentinelEnabled) await api.disableSentinel();
-      else await api.enableSentinel();
-      setSentinelEnabled(!sentinelEnabled);
+      if (newState) {
+        await api.enableSentinel();
+      } else {
+        await api.disableSentinel();
+      }
     } catch {
-      setSentinelEnabled(!sentinelEnabled);
+      // Revert if API call fails
+      setSentinelEnabled(!newState);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const setRisk = async (profile: RiskProfile["label"]) => {
@@ -47,6 +55,19 @@ export default function DashboardApp() {
 
   const [portfolio, setPortfolio] = useState<{ symbol: string; name: string; balance: string; usd: string; color: string }[]>([]);
   const [totalUsd, setTotalUsd] = useState("$0.00");
+  const [news, setNews] = useState<import("@/types").NewsHeadline[]>([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const data = await api.getNews();
+        setNews(data);
+      } catch {}
+    };
+    fetchNews();
+    const int = setInterval(fetchNews, 5000);
+    return () => clearInterval(int);
+  }, []);
 
   useEffect(() => {
     if (!wallet.address) return;
@@ -300,10 +321,10 @@ export default function DashboardApp() {
           </div>
 
           {/* RIGHT COLUMN (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col h-full min-h-[500px]">
+          <div className="lg:col-span-7 flex flex-col h-full">
             
             {/* Component D: Execution Terminal */}
-            <div className="glass-panel flex flex-col h-full">
+            <div className="glass-panel flex flex-col h-[500px] max-h-[500px]">
               
               <div className="flex justify-between items-center px-6 py-4 border-b border-[var(--border-subtle)] bg-[rgba(255,255,255,0.01)]">
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Execution Terminal</h3>
@@ -354,6 +375,34 @@ export default function DashboardApp() {
               </div>
 
             </div>
+
+            {/* Component E: Live Market News */}
+            <div className="glass-panel flex flex-col mt-6 h-[400px] max-h-[400px]">
+              <div className="flex justify-between items-center px-6 py-4 border-b border-[var(--border-subtle)] bg-[rgba(255,255,255,0.01)]">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Live Market News</h3>
+              </div>
+              <div className="p-4 flex flex-col gap-3 overflow-y-auto terminal-scroll">
+                {news.length === 0 ? (
+                  <div className="text-[var(--text-dim)] text-xs font-mono text-center my-8">Awaiting news stream...</div>
+                ) : (
+                  news.map((item, idx) => (
+                    <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" className="block p-4 bg-[rgba(255,255,255,0.02)] border border-[var(--border-subtle)] rounded-xl hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--accent-purple)]">{item.source}</span>
+                        <span className="text-[10px] text-[var(--text-dim)]">{new Date(item.published_at).toLocaleTimeString()}</span>
+                      </div>
+                      <h4 className="text-sm font-semibold text-white mb-2 leading-snug">{item.title}</h4>
+                      <div className="flex gap-2">
+                        {item.currencies?.map(c => (
+                          <span key={c} className="px-1.5 py-0.5 rounded text-[10px] bg-[rgba(255,255,255,0.05)] text-[var(--text-muted)]">{c}</span>
+                        ))}
+                      </div>
+                    </a>
+                  ))
+                )}
+              </div>
+            </div>
+
           </div>
 
             </div>

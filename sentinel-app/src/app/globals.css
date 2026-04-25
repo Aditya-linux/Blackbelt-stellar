@@ -68,8 +68,8 @@ body {
 
 /* Switch Toggle Custom Logic */
 .ios-switch-track {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .ios-switch-thumb {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }

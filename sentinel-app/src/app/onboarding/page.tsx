@@ -17,15 +17,42 @@ export default function OnboardingPage() {
     }
   }, [router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call to Google Forms / Database
-    setTimeout(() => {
+    const formUrl = "https://docs.google.com/forms/d/1_MTa300jbIq5GJE-ZuzbE8PHrPoKInZJWk14bSDkMWg/formResponse";
+    
+    // Construct form data using the Google Form entry IDs
+    const submitData = new FormData();
+    submitData.append("entry.1935717222", formData.name);
+    submitData.append("entry.65272811", formData.email);
+    
+    // Map our internal experience values to exactly match the Google Form options
+    let experienceValue = "Beginner (Familiar with basic concepts like wallets and staking)";
+    if (formData.experience === "intermediate") {
+      experienceValue = "Intermediate (Have actively used several DeFi protocols like DEXs, lending platforms, or yield farms)";
+    } else if (formData.experience === "expert") {
+      experienceValue = "Expert/Developer (Contribute to protocol development or complex financial strategies)";
+    }
+    submitData.append("entry.750431412", experienceValue);
+
+    try {
+      await fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: submitData
+      });
+      
+      // Successfully submitted
       localStorage.setItem("sentinel_onboarded", "true");
       router.push("/app");
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting to Google Forms:", error);
+      setIsSubmitting(false);
+      // Fallback: still let them in or show an error
+      alert("Failed to join waitlist. Please try again.");
+    }
   };
 
   return (

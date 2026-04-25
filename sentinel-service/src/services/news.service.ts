@@ -1,12 +1,11 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- News Ingestion (CryptoPanic API)
+// Sentinel Service -- News Ingestion (Yahoo Finance API)
 // ---------------------------------------------------------------------------
 
-import { config } from "../config";
 import { NewsHeadline } from "../types";
 import { log } from "../utils/logger";
 
-const CRYPTOPANIC_BASE = "https://cryptopanic.com/api/v1/posts/";
+const YAHOO_FINANCE_URL = "https://query2.finance.yahoo.com/v1/finance/search?q=crypto&newsCount=10";
 
 // Fallback headlines for when the API is unavailable or rate-limited
 const FALLBACK_HEADLINES: NewsHeadline[] = [
@@ -35,51 +34,40 @@ const FALLBACK_HEADLINES: NewsHeadline[] = [
 
 export async function fetchNewsHeadlines(): Promise<NewsHeadline[]> {
   try {
-    log("[SCAN]", "Fetching latest crypto headlines from CryptoPanic...");
+    log("[SCAN]", "Fetching latest crypto headlines from Yahoo Finance...");
 
-    const params = new URLSearchParams({
-      auth_token: config.cryptoPanicApiKey,
-      currencies: "XLM",
-      filter: "hot",
-      public: "true",
+    const response = await fetch(YAHOO_FINANCE_URL, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
     });
-
-    const response = await fetch(`${CRYPTOPANIC_BASE}?${params.toString()}`);
 
     if (!response.ok) {
       log(
         "[ALERT]",
-        `CryptoPanic API returned ${response.status} -- using fallback headlines`
+        `Yahoo Finance API returned ${response.status} -- using fallback headlines`
       );
       return FALLBACK_HEADLINES;
     }
 
-    const data = (await response.json()) as {
-      results?: Array<{
-        title?: string;
-        source?: { title?: string };
-        url?: string;
-        published_at?: string;
-        currencies?: Array<{ code: string }>;
-      }>;
-    };
+    const data = await response.json();
 
-    if (!data.results || data.results.length === 0) {
+    if (!data.news || data.news.length === 0) {
       log("[INFO]", "No headlines returned -- using fallback data");
       return FALLBACK_HEADLINES;
     }
 
-    const headlines: NewsHeadline[] = data.results
-      .slice(0, 10)
-      .map((item: any) => ({
-        title: item.title || "",
-        source: item.source?.title || "Unknown",
-        url: item.url || "",
-        published_at: item.published_at || new Date().toISOString(),
-        currencies: item.currencies?.map((c: any) => c.code) || ["XLM"],
-      }));
+    const headlines: NewsHeadline[] = data.news.map((item: any) => ({
+      title: item.title || "",
+      source: item.publisher || "Yahoo Finance",
+      url: item.link || "",
+      published_at: item.providerPublishTime 
+        ? new Date(item.providerPublishTime * 1000).toISOString() 
+        : new Date().toISOString(),
+      currencies: ["XLM", "CRYPTO"],
+    }));
 
-    log("[SCAN]", `Fetched ${headlines.length} headlines for analysis`);
+    log("[SCAN]", `Fetched ${headlines.length} headlines from Yahoo Finance`);
     return headlines;
   } catch (error: any) {
     log(

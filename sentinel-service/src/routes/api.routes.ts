@@ -18,10 +18,16 @@ let currentState: SentinelState = {
   uptime_seconds: 0,
 };
 
+let latestNews: import("../types").NewsHeadline[] = [];
+
 const startTime = Date.now();
 
 export function updateState(partial: Partial<SentinelState>): void {
   currentState = { ...currentState, ...partial };
+}
+
+export function updateLatestNews(news: import("../types").NewsHeadline[]): void {
+  latestNews = news;
 }
 
 export function getState(): SentinelState {
@@ -34,6 +40,11 @@ export function getState(): SentinelState {
 // GET /api/status -- current Sentinel state
 router.get("/status", (_req: Request, res: Response) => {
   res.json({ ok: true, data: getState() });
+});
+
+// GET /api/news -- latest market news
+router.get("/news", (_req: Request, res: Response) => {
+  res.json({ ok: true, data: latestNews });
 });
 
 // GET /api/logs -- recent log history
@@ -71,10 +82,15 @@ router.post("/risk", (req: Request, res: Response) => {
   res.json({ ok: true, data: riskProfile });
 });
 
+import { triggerManualScan } from "../index";
+
 // POST /api/sentinel/enable -- start the scanning loop
 router.post("/sentinel/enable", (_req: Request, res: Response) => {
   updateState({ status: "analyzing" });
   res.json({ ok: true, message: "Sentinel enabled" });
+  
+  // Trigger an immediate scan so the user doesn't have to wait 10 seconds to see action
+  triggerManualScan();
 });
 
 // POST /api/sentinel/disable -- pause the scanning loop

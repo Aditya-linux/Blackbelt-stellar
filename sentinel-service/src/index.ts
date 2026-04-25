@@ -9,7 +9,7 @@ import { WebSocketServer } from "ws";
 import cron from "node-cron";
 
 import { config } from "./config";
-import apiRoutes, { getState, updateState } from "./routes/api.routes";
+import apiRoutes, { getState, updateState, updateLatestNews } from "./routes/api.routes";
 import { attachWebSocket, log } from "./utils/logger";
 import { fetchNewsHeadlines } from "./services/news.service";
 import { analyzeSentiment } from "./services/sentiment.service";
@@ -53,6 +53,7 @@ async function runScanCycle(): Promise<void> {
 
     // Step 1: Fetch news
     const headlines = await fetchNewsHeadlines();
+    updateLatestNews(headlines);
 
     // Step 2: Analyze sentiment
     const sentiment = await analyzeSentiment(headlines);
@@ -102,17 +103,21 @@ async function runScanCycle(): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
-// Cron Scheduler
+// Interval Scheduler (for fast sub-minute cycles)
 // ---------------------------------------------------------------------------
 // Run scan every N seconds (configured via SCAN_INTERVAL_SECONDS)
-const intervalMinutes = Math.max(1, Math.ceil(config.scanIntervalSeconds / 60));
-const cronExpression = `*/${intervalMinutes} * * * *`;
+const intervalMs = (config.scanIntervalSeconds || 10) * 1000;
 
-cron.schedule(cronExpression, () => {
+setInterval(() => {
   runScanCycle().catch((err) => {
     log("[ERROR]", `Unhandled scan error: ${err.message}`);
   });
-});
+}, intervalMs);
+
+// Also export a helper to manually trigger a scan for immediate feedback
+export const triggerManualScan = () => {
+  runScanCycle().catch(console.error);
+};
 
 // ---------------------------------------------------------------------------
 // Start Server
@@ -123,7 +128,7 @@ server.listen(config.port, () => {
   log("[SYSTEM]", `REST API: http://localhost:${config.port}/api`);
   log(
     "[SYSTEM]",
-    `Scan interval: ${config.scanIntervalSeconds}s (cron: ${cronExpression})`
+    `Scan interval: ${config.scanIntervalSeconds}s`
   );
   log("[INFO]", "Sentinel is SLEEPING -- awaiting activation from frontend");
 });

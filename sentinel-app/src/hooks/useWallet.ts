@@ -2,8 +2,11 @@
 
 import { useState, useCallback, useEffect } from "react";
 
+export type WalletType = "stellar" | "evm" | null;
+
 interface WalletState {
   address: string | null;
+  walletType: WalletType;
   connected: boolean;
   connecting: boolean;
   error: string | null;
@@ -12,61 +15,59 @@ interface WalletState {
 export function useWallet() {
   const [state, setState] = useState<WalletState>({
     address: null,
+    walletType: null,
     connected: false,
     connecting: false,
     error: null,
   });
 
-  const connect = useCallback(async () => {
+  const connectStellar = async () => {
     setState((s) => ({ ...s, connecting: true, error: null }));
-
     try {
-      // Dynamic import to avoid SSR issues
       const freighter = await import("@stellar/freighter-api");
-
       const { isConnected } = await freighter.isConnected();
-      if (!isConnected) {
-        setState((s) => ({
-          ...s,
-          connecting: false,
-          error: "Freighter wallet extension not detected. Please install it.",
-        }));
-        return;
-      }
+      if (!isConnected) throw new Error("Freighter wallet not detected.");
 
       const { isAllowed } = await freighter.isAllowed();
-      if (!isAllowed) {
-        await freighter.setAllowed();
-      }
+      if (!isAllowed) await freighter.setAllowed();
 
       const { address } = await freighter.getAddress();
       if (address) {
-        setState({
-          address,
-          connected: true,
-          connecting: false,
-          error: null,
-        });
+        setState({ address, walletType: "stellar", connected: true, connecting: false, error: null });
       } else {
-        setState((s) => ({
-          ...s,
-          connecting: false,
-          error: "Failed to retrieve wallet address",
-        }));
+        throw new Error("Failed to get Stellar address");
       }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Connection failed";
-      setState((s) => ({ ...s, connecting: false, error: message }));
+    } catch (err: any) {
+      setState((s) => ({ ...s, connecting: false, error: err.message || "Stellar connection failed" }));
     }
+  };
+
+  const connectEVM = async () => {
+    setState((s) => ({ ...s, connecting: true, error: null }));
+    try {
+      if (typeof window !== "undefined" && (window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+        if (accounts.length > 0) {
+          setState({ address: accounts[0], walletType: "evm", connected: true, connecting: false, error: null });
+        } else {
+          throw new Error("No EVM accounts found.");
+        }
+      } else {
+        throw new Error("MetaMask or EVM wallet not detected.");
+      }
+    } catch (err: any) {
+      setState((s) => ({ ...s, connecting: false, error: err.message || "EVM connection failed" }));
+    }
+  };
+
+  // General connect fallback (defaults to a prompt if we had a modal, but let's default to Freighter for backward compatibility if no arg)
+  const connect = useCallback((type: WalletType = "stellar") => {
+    if (type === "evm") connectEVM();
+    else connectStellar();
   }, []);
 
   const disconnect = useCallback(() => {
-    setState({
-      address: null,
-      connected: false,
-      connecting: false,
-      error: null,
-    });
+    setState({ address: null, walletType: null, connected: false, connecting: false, error: null });
   }, []);
 
   // Check if already connected on mount
@@ -79,19 +80,23 @@ export function useWallet() {
         if (isConnected && isAllowed) {
           const { address } = await freighter.getAddress();
           if (address) {
-            setState({
-              address,
-              connected: true,
-              connecting: false,
-              error: null,
-            });
+            setState({ address, walletType: "stellar", connected: true, connecting: false, error: null });
+            return;
           }
         }
-      } catch {
-        // silently fail on mount check
-      }
+      } catch {}
+
+      // Check EVM
+      try {
+        if (typeof window !== "undefined" && (window as any).ethereum) {
+          const accounts = await (window as any).ethereum.request({ method: "eth_accounts" });
+          if (accounts.length > 0) {
+            setState({ address: accounts[0], walletType: "evm", connected: true, connecting: false, error: null });
+          }
+        }
+      } catch {}
     })();
   }, []);
 
-  return { ...state, connect, disconnect };
+  return { ...state, connect, disconnect, connectEVM, connectStellar };
 }

@@ -14,6 +14,7 @@ export const api = {
   getStatus: () => request<import("@/types").SentinelState>("/api/status"),
   getLogs: (limit = 50) => request<import("@/types").LogEntry[]>(`/api/logs?limit=${limit}`),
   getTrades: () => request<import("@/types").TradeExecution[]>("/api/trades"),
+  getNews: () => request<import("@/types").NewsHeadline[]>("/api/news"),
   getRiskPresets: () => request<Record<string, import("@/types").RiskProfile>>("/api/risk-presets"),
   setRisk: (profile: string) =>
     request<import("@/types").RiskProfile>("/api/risk", {

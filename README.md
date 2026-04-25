@@ -16,11 +16,18 @@ The cryptocurrency market operates 24/7 and moves at the speed of light. Human t
 
 Historically, to automate trading, users had to rely on **Custodial Trading Bots**. This required handing over private keys or exchange API keys to a centralized server. If that server was hacked or acted maliciously, the user's entire portfolio was drained.
 
-## 🛡️ The Solution (Non-Custodial Automation)
-Sentinel solves this by combining Large Language Models (LLMs) with mathematical non-custodial Smart Contracts:
-*   **Zero Custody:** Users lock their funds in a Soroban Vault. The user always retains 100% ownership and withdrawal rights.
-*   **Mathematical Boundaries (7-Gate Security):** The user grants an "Agent Key" (the AI) permission to trade on their behalf, but sets rigid boundaries (e.g., maximum slippage of 1%, specific approved assets, max daily trades).
-*   **Trustless Execution:** If the AI hallucinates, is compromised, or attempts a terrible trade, the Soroban smart contract instantly rejects the transaction because it violates the cryptographic boundaries set by the user.
+## 🛡️ The Solution: Solving the "Trust" Problem
+As a user, why is this project interesting? **Sentinel solves the biggest problem in AI Crypto Trading: Trust.**
+
+Currently, if you want an AI to trade for you, you must give a Python server your wallet's Private Keys. If that AI gets hacked, hallucinates, or goes rogue, your entire wallet gets drained. It is incredibly dangerous.
+
+**The "Sentinel Vault" Architecture fixes this completely:**
+1. **100% Non-Custodial:** You deposit your funds into the Soroban Smart Contract. You are the *only person* on earth who can withdraw them.
+2. **Restricted AI Execution:** You grant the AI Agent a restricted "Execute Swap Only" permission. It physically cannot withdraw or transfer your money.
+3. **The 7-Gate Risk Matrix:** Even when the AI tries to execute a swap, the Soroban Smart Contract enforces your risk profile *on-chain*. The contract checks the AI's requested slippage, trade size, daily frequency, and confidence scores. 
+4. **Blockchain as the Ultimate Guardian:** If the AI hallucinates and tries to dump 100% of your portfolio into a scam coin, the Soroban blockchain mathematically rejects the transaction.
+
+*Sentinel gives regular users the power of a 24/7 autonomous Wall Street hedge fund, combined with the impenetrable security of a cold wallet.*
 
 ## 🚀 Key Features
 *   **Phantom-Inspired UI/UX:** A highly polished, premium dark-mode interface featuring dynamic glassmorphism and real-time telemetry.
