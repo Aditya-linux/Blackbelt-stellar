@@ -21,7 +21,7 @@ export default function OnboardingPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formUrl = "https://docs.google.com/forms/d/1_MTa300jbIq5GJE-ZuzbE8PHrPoKInZJWk14bSDkMWg/formResponse";
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc7aisi21084r17HCsoSALUL83hGUegpmnSTG4o4Zlkydw6wA/formResponse";
     
     // Construct form data using the Google Form entry IDs
     const submitData = new FormData();
@@ -36,6 +36,10 @@ export default function OnboardingPage() {
       experienceValue = "Expert/Developer (Contribute to protocol development or complex financial strategies)";
     }
     submitData.append("entry.750431412", experienceValue);
+
+    // Provide default values for the other required fields in the Google Form
+    submitData.append("entry.1720479390", "Using Stablecoins and earning interest");
+    submitData.append("entry.1205651400", "4");
 
     try {
       await fetch(formUrl, {
