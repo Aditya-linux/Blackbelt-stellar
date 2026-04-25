@@ -185,7 +185,7 @@ export default function DashboardApp() {
                 </p>
 
                 <button
-                  onClick={wallet.connect}
+                  onClick={() => wallet.connect()}
                   disabled={wallet.connecting}
                   className="w-full px-6 py-4 rounded-xl bg-[var(--accent-purple)] hover:bg-[#a855f7] text-white text-base font-semibold shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)] transition-all flex items-center justify-center gap-2"
                 >
