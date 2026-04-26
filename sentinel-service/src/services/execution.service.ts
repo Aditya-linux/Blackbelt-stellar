@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Execution Engine (Stellar SDK / Soroban)
+// Sentinex Service -- Execution Engine (Stellar SDK / Soroban)
 // ---------------------------------------------------------------------------
 
 import * as StellarSdk from "@stellar/stellar-sdk";

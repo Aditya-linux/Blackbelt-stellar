@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- News Ingestion (Yahoo Finance API)
+// Sentinex Service -- News Ingestion (Yahoo Finance API)
 // ---------------------------------------------------------------------------
 
 import { NewsHeadline } from "../types";

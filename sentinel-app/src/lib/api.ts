@@ -12,7 +12,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  getStatus: () => request<import("@/types").SentinelState>("/api/status"),
+  getStatus: () => request<import("@/types").SentinexState>("/api/status"),
   getLogs: (limit = 50) => request<import("@/types").LogEntry[]>(`/api/logs?limit=${limit}`),
   getTrades: () => request<import("@/types").TradeExecution[]>("/api/trades"),
   getNews: () => request<import("@/types").NewsHeadline[]>("/api/news"),
@@ -22,10 +22,10 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ profile }),
     }),
-  enableSentinel: () =>
-    request<{ message: string }>("/api/sentinel/enable", { method: "POST" }),
-  disableSentinel: () =>
-    request<{ message: string }>("/api/sentinel/disable", { method: "POST" }),
+  enableSentinex: () =>
+    request<{ message: string }>("/api/sentinex/enable", { method: "POST" }),
+  disableSentinex: () =>
+    request<{ message: string }>("/api/sentinex/disable", { method: "POST" }),
 };
 
 export function getWsUrl(): string {

@@ -1,16 +1,16 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- REST API Routes
+// Sentinex Service -- REST API Routes
 // ---------------------------------------------------------------------------
 
 import { Router, Request, Response } from "express";
-import { RISK_PRESETS, RiskProfile, SentinelState } from "../types";
+import { RISK_PRESETS, RiskProfile, SentinexState } from "../types";
 import { getLogHistory } from "../utils/logger";
 import { getTradeHistory } from "../services/execution.service";
 
 const router = Router();
 
 // Shared state (mutated by the orchestrator in index.ts)
-let currentState: SentinelState = {
+let currentState: SentinexState = {
   status: "sleeping",
   last_scan: null,
   active_risk_profile: RISK_PRESETS.balanced,
@@ -22,7 +22,7 @@ let latestNews: import("../types").NewsHeadline[] = [];
 
 const startTime = Date.now();
 
-export function updateState(partial: Partial<SentinelState>): void {
+export function updateState(partial: Partial<SentinexState>): void {
   currentState = { ...currentState, ...partial };
 }
 
@@ -30,14 +30,14 @@ export function updateLatestNews(news: import("../types").NewsHeadline[]): void 
   latestNews = news;
 }
 
-export function getState(): SentinelState {
+export function getState(): SentinexState {
   return {
     ...currentState,
     uptime_seconds: Math.floor((Date.now() - startTime) / 1000),
   };
 }
 
-// GET /api/status -- current Sentinel state
+// GET /api/status -- current Sentinex state
 router.get("/status", (_req: Request, res: Response) => {
   res.json({ ok: true, data: getState() });
 });
@@ -84,19 +84,19 @@ router.post("/risk", (req: Request, res: Response) => {
 
 import { triggerManualScan } from "../index";
 
-// POST /api/sentinel/enable -- start the scanning loop
-router.post("/sentinel/enable", (_req: Request, res: Response) => {
+// POST /api/sentinex/enable -- start the scanning loop
+router.post("/sentinex/enable", (_req: Request, res: Response) => {
   updateState({ status: "analyzing" });
-  res.json({ ok: true, message: "Sentinel enabled" });
+  res.json({ ok: true, message: "Sentinex enabled" });
   
   // Trigger an immediate scan so the user doesn't have to wait 10 seconds to see action
   triggerManualScan();
 });
 
-// POST /api/sentinel/disable -- pause the scanning loop
-router.post("/sentinel/disable", (_req: Request, res: Response) => {
+// POST /api/sentinex/disable -- pause the scanning loop
+router.post("/sentinex/disable", (_req: Request, res: Response) => {
   updateState({ status: "sleeping" });
-  res.json({ ok: true, message: "Sentinel disabled" });
+  res.json({ ok: true, message: "Sentinex disabled" });
 });
 
 export default router;

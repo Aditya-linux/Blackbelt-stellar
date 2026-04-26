@@ -1,4 +1,4 @@
-# Sentinel: Autonomous Non-Custodial DeFi Guardian
+# Sentinex: Autonomous Non-Custodial DeFi Guardian
 **Blue and Black Belt Submission for Stellar RiseIn**
 
 <div align="center">
@@ -20,14 +20,14 @@ Because the AI Agent is funded and hard-coded to make real transactions on the S
 ## 🧪 Validator / Judge Testing Guide
 **Want to test the platform yourself? Follow these steps:**
 1. **Onboarding:** Visit the live Vercel deployment link and fill out the Waitlist form. (This proves our seamless Next.js to Google Forms No-CORS integration).
-   * 👉 **[View Live Form Responses Here](https://docs.google.com/spreadsheets/d/1I-17ApYCyLLkOlDM0oE6TkSvo_Vcz4sqYl3lUdYOB5c/edit?resourcekey=&gid=832346859#gid=832346859)** *(Note: Requires owner permission)*
+   * 👉 **[View Live Form Responses Here](https://docs.google.com/forms/d/e/1FAIpQLScr55kDQmwDk_pbQUCdLJ23h_J0VYCHHrbzhcj5MfMI2nBszQ/viewform)** *(Note: Requires owner permission)*
 2. **Wallet Connection:** Connect your Stellar Freighter Wallet on the testnet. You will see the UI immediately fetch and display your live XLM balances.
 3. **Activate the AI:** Scroll down to the Execution Terminal and click **"Activate Guardian"**.
 4. **Watch the Magic:** You will see the Node.js backend instantly begin scraping live Yahoo Finance news, running it through the AI sentiment engine, and streaming the results back to the frontend via WebSockets.
 5. **Verify the Trade:** Wait for the AI to execute a trade. It will output a transaction hash in the terminal. Copy that hash and paste it into [Stellar Expert](https://stellar.expert/explorer/testnet) to verify the real on-chain execution!
 
 ## 📖 About The Project
-Sentinel is an autonomous, AI-driven, and purely non-custodial DeFi dashboard built natively on the Stellar network using Soroban smart contracts. It acts as an automated "Guardian" for a user's cryptocurrency portfolio. Once activated, the Sentinel AI continuously monitors global financial news via the CryptoPanic API and LLM sentiment analysis. When it detects significant market-moving events, it autonomously executes optimal trades to capture upside or protect assets—all without human intervention.
+Sentinex is an autonomous, AI-driven, and purely non-custodial DeFi dashboard built natively on the Stellar network using Soroban smart contracts. It acts as an automated "Guardian" for a user's cryptocurrency portfolio. Once activated, the Sentinex AI continuously monitors global financial news via the CryptoPanic API and LLM sentiment analysis. When it detects significant market-moving events, it autonomously executes optimal trades to capture upside or protect assets—all without human intervention.
 
 ## ⚠️ The Problem
 The cryptocurrency market operates 24/7 and moves at the speed of light. Human traders cannot realistically monitor Twitter, news feeds, and charts constantly to react to sudden exploits or breaking partnerships. 
@@ -35,17 +35,17 @@ The cryptocurrency market operates 24/7 and moves at the speed of light. Human t
 Historically, to automate trading, users had to rely on **Custodial Trading Bots**. This required handing over private keys or exchange API keys to a centralized server. If that server was hacked or acted maliciously, the user's entire portfolio was drained.
 
 ## 🛡️ The Solution: Solving the "Trust" Problem
-As a user, why is this project interesting? **Sentinel solves the biggest problem in AI Crypto Trading: Trust.**
+As a user, why is this project interesting? **Sentinex solves the biggest problem in AI Crypto Trading: Trust.**
 
 Currently, if you want an AI to trade for you, you must give a Python server your wallet's Private Keys. If that AI gets hacked, hallucinates, or goes rogue, your entire wallet gets drained. It is incredibly dangerous.
 
-**The "Sentinel Vault" Architecture fixes this completely:**
+**The "Sentinex Vault" Architecture fixes this completely:**
 1. **100% Non-Custodial:** You deposit your funds into the Soroban Smart Contract. You are the *only person* on earth who can withdraw them.
 2. **Restricted AI Execution:** You grant the AI Agent a restricted "Execute Swap Only" permission. It physically cannot withdraw or transfer your money.
 3. **The 7-Gate Risk Matrix:** Even when the AI tries to execute a swap, the Soroban Smart Contract enforces your risk profile *on-chain*. The contract checks the AI's requested slippage, trade size, daily frequency, and confidence scores. 
 4. **Blockchain as the Ultimate Guardian:** If the AI hallucinates and tries to dump 100% of your portfolio into a scam coin, the Soroban blockchain mathematically rejects the transaction.
 
-*Sentinel gives regular users the power of a 24/7 autonomous Wall Street hedge fund, combined with the impenetrable security of a cold wallet.*
+*Sentinex gives regular users the power of a 24/7 autonomous Wall Street hedge fund, combined with the impenetrable security of a cold wallet.*
 
 ## 🚀 Key Features
 *   **Phantom-Inspired UI/UX:** A highly polished, premium dark-mode interface featuring dynamic glassmorphism and real-time telemetry.
@@ -70,21 +70,21 @@ Currently, if you want an AI to trade for you, you must give a Python server you
 
 ## 🛠️ Local Development
 
-### 1. Sentinel App (Frontend)
+### 1. Sentinex App (Frontend)
 ```bash
 cd sentinel-app
 npm install
 npm run dev
 ```
 
-### 2. Sentinel Service (AI Backend)
+### 2. Sentinex Service (AI Backend)
 ```bash
 cd sentinel-service
 npm install
 npm run dev
 ```
 
-### 3. Sentinel Vault (Soroban Contracts)
+### 3. Sentinex Vault (Soroban Contracts)
 ```bash
 cd sentinel-vault
 cargo build --target wasm32-unknown-unknown --release

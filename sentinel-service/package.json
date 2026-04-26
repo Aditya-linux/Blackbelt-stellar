@@ -1,7 +1,7 @@
 {
-  "name": "sentinel-service",
+  "name": "sentinex-service",
   "version": "1.0.0",
-  "description": "AI Sentinel Service - News sentiment analysis and Stellar DEX execution engine",
+  "description": "AI Sentinex Service - News sentiment analysis and Stellar DEX execution engine",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

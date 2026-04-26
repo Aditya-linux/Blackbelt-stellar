@@ -1,15 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SentinelStatus } from "@/types";
+import { SentinexStatus } from "@/types";
 
 interface HeroStatusProps {
-  status: SentinelStatus;
+  status: SentinexStatus;
   totalTrades: number;
   uptime: number;
 }
 
-const STATUS_CONFIG: Record<SentinelStatus, {
+const STATUS_CONFIG: Record<SentinexStatus, {
   label: string;
   color: string;
   glowColor: string;

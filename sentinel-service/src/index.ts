@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Main Entry Point
+// Sentinex Service -- Main Entry Point
 // ---------------------------------------------------------------------------
 
 import express from "express";
@@ -25,7 +25,7 @@ app.use("/api", apiRoutes);
 
 // Health check
 app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "sentinel-service", version: "1.0.0" });
+  res.json({ ok: true, service: "sentinex-service", version: "1.0.0" });
 });
 
 const server = http.createServer(app);
@@ -37,7 +37,7 @@ const wss = new WebSocketServer({ server, path: "/ws" });
 attachWebSocket(wss);
 
 // ---------------------------------------------------------------------------
-// Sentinel Scan Loop
+// Sentinex Scan Loop
 // ---------------------------------------------------------------------------
 async function runScanCycle(): Promise<void> {
   const state = getState();
@@ -49,7 +49,7 @@ async function runScanCycle(): Promise<void> {
 
   try {
     updateState({ status: "analyzing" });
-    log("[SCAN]", "--- Sentinel scan cycle initiated ---");
+    log("[SCAN]", "--- Sentinex scan cycle initiated ---");
 
     // Step 1: Fetch news
     const headlines = await fetchNewsHeadlines();
@@ -123,14 +123,14 @@ export const triggerManualScan = () => {
 // Start Server
 // ---------------------------------------------------------------------------
 server.listen(config.port, () => {
-  log("[SYSTEM]", `Sentinel Service running on port ${config.port}`);
+  log("[SYSTEM]", `Sentinex Service running on port ${config.port}`);
   log("[SYSTEM]", `WebSocket endpoint: ws://localhost:${config.port}/ws`);
   log("[SYSTEM]", `REST API: http://localhost:${config.port}/api`);
   log(
     "[SYSTEM]",
     `Scan interval: ${config.scanIntervalSeconds}s`
   );
-  log("[INFO]", "Sentinel is SLEEPING -- awaiting activation from frontend");
+  log("[INFO]", "Sentinex is SLEEPING -- awaiting activation from frontend");
 });
 
 export { app, server };

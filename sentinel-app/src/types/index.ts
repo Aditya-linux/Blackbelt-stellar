@@ -35,10 +35,10 @@ export interface TradeExecution {
   log_message: string;
 }
 
-export type SentinelStatus = "sleeping" | "analyzing" | "executing";
+export type SentinexStatus = "sleeping" | "analyzing" | "executing";
 
-export interface SentinelState {
-  status: SentinelStatus;
+export interface SentinexState {
+  status: SentinexStatus;
   last_scan: string | null;
   active_risk_profile: RiskProfile;
   total_trades: number;

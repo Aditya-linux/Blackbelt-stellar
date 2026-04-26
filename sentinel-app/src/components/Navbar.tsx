@@ -33,7 +33,7 @@ export default function Navbar({
             <Zap size={20} className="text-white fill-white" strokeWidth={1} />
           </div>
           <span className="text-xl font-semibold tracking-tight text-white">
-            Sentinel<span className="text-[var(--accent-purple)]">.</span>
+            Sentinex<span className="text-[var(--accent-purple)]">.</span>
           </span>
         </Link>
 

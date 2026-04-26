@@ -3,12 +3,65 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import { Power, Shield, Scale, Flame, RefreshCw } from "lucide-react";
+import { Power, Shield, Scale, Flame, RefreshCw, Smartphone, Wallet } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { api } from "@/lib/api";
-import { SentinelState, RiskProfile, TradeExecution } from "@/types";
+import { SentinexState, RiskProfile, TradeExecution } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
+
+/**
+ * Mobile wallet input component — allows users to manually enter
+ * their Stellar public key on mobile devices where extensions
+ * like Freighter aren't available.
+ */
+function MobileWalletInput({ 
+  onConnect, 
+  error 
+}: { 
+  onConnect: (address: string) => void; 
+  error: string | null;
+}) {
+  const [manualAddress, setManualAddress] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onConnect(manualAddress);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
+      <div className="relative">
+        <input
+          type="text"
+          value={manualAddress}
+          onChange={(e) => setManualAddress(e.target.value)}
+          placeholder="G... or 0x..."
+          className="w-full bg-[rgba(255,255,255,0.02)] border border-[var(--border-subtle)] rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-[var(--accent-purple)] transition-colors text-sm font-mono tracking-wide placeholder:text-[var(--text-dim)]"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+        />
+        <Wallet 
+          size={16} 
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-dim)]" 
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={!manualAddress.trim()}
+        className="w-full px-6 py-4 rounded-xl bg-[var(--accent-purple)] hover:bg-[#a855f7] disabled:opacity-40 disabled:cursor-not-allowed text-white text-base font-semibold shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)] transition-all flex items-center justify-center gap-2"
+      >
+        <Wallet size={18} />
+        Access Dashboard
+      </button>
+      <p className="text-[var(--text-dim)] text-[10px] text-center leading-relaxed mt-1">
+        Enter your Stellar (G...) or EVM (0x...) wallet address. 
+        Your address will be recorded securely.
+      </p>
+    </form>
+  );
+}
 
 export default function DashboardApp() {
   const router = useRouter();
@@ -18,31 +71,31 @@ export default function DashboardApp() {
   useEffect(() => {
     // Basic frontend gate: if they didn't fill out the form, kick them back
     if (typeof window !== "undefined") {
-      if (localStorage.getItem("sentinel_onboarded") !== "true") {
+      if (localStorage.getItem("sentinex_onboarded") !== "true") {
         router.push("/onboarding");
       }
     }
   }, [router]);
 
-  const [sentinelEnabled, setSentinelEnabled] = useState(false);
+  const [sentinexEnabled, setSentinexEnabled] = useState(false);
   const [activeRisk, setActiveRisk] = useState<RiskProfile["label"]>("balanced");
   const [loading, setLoading] = useState(false);
 
-  const toggleSentinel = async () => {
+  const toggleSentinex = async () => {
     // Optimistic UI update: flip the switch immediately
-    const newState = !sentinelEnabled;
-    setSentinelEnabled(newState);
+    const newState = !sentinexEnabled;
+    setSentinexEnabled(newState);
     setLoading(true);
 
     try {
       if (newState) {
-        await api.enableSentinel();
+        await api.enableSentinex();
       } else {
-        await api.disableSentinel();
+        await api.disableSentinex();
       }
     } catch {
       // Revert if API call fails
-      setSentinelEnabled(!newState);
+      setSentinexEnabled(!newState);
     } finally {
       setLoading(false);
     }
@@ -176,21 +229,45 @@ export default function DashboardApp() {
                 <div className="absolute bottom-[-50px] left-[-50px] w-32 h-32 bg-[var(--accent-cyan)] rounded-full blur-[80px] opacity-20 pointer-events-none" />
 
                 <div className="w-16 h-16 rounded-full bg-[rgba(255,255,255,0.03)] border border-[var(--border-subtle)] flex items-center justify-center mb-6">
-                  <Shield size={28} className="text-[var(--text-muted)]" />
+                  {wallet.isMobile ? (
+                    <Smartphone size={28} className="text-[var(--text-muted)]" />
+                  ) : (
+                    <Shield size={28} className="text-[var(--text-muted)]" />
+                  )}
                 </div>
 
-                <h2 className="text-2xl font-bold mb-3 text-white tracking-tight">Vault Locked</h2>
-                <p className="text-[var(--text-muted)] mb-8 text-sm leading-relaxed">
-                  Connect your Stellar wallet to view your asset allocations and activate the Sentinel AI Guardian.
+                <h2 className="text-2xl font-bold mb-3 text-white tracking-tight">
+                  {wallet.isMobile ? "Mobile Access" : "Vault Locked"}
+                </h2>
+                <p className="text-[var(--text-muted)] mb-6 text-sm leading-relaxed">
+                  {wallet.isMobile
+                    ? "Freighter extension is not available on mobile. Enter your Stellar public key below to access the dashboard."
+                    : "Connect your Stellar wallet to view your asset allocations and activate the Sentinex AI Guardian."}
                 </p>
 
-                <button
-                  onClick={() => wallet.connect()}
-                  disabled={wallet.connecting}
-                  className="w-full px-6 py-4 rounded-xl bg-[var(--accent-purple)] hover:bg-[#a855f7] text-white text-base font-semibold shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)] transition-all flex items-center justify-center gap-2"
-                >
-                  {wallet.connecting ? "Connecting..." : "Connect Wallet to Unlock"}
-                </button>
+                {/* Error Display */}
+                {wallet.error && wallet.error !== "MOBILE_NO_EXTENSION" && (
+                  <div className="w-full mb-4 px-4 py-3 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.2)] text-red-400 text-xs text-left">
+                    {wallet.error}
+                  </div>
+                )}
+
+                {wallet.isMobile ? (
+                  /* Mobile: Manual address input */
+                  <MobileWalletInput 
+                    onConnect={wallet.connectManual}
+                    error={wallet.error}
+                  />
+                ) : (
+                  /* Desktop: Extension-based connection */
+                  <button
+                    onClick={() => wallet.connect()}
+                    disabled={wallet.connecting}
+                    className="w-full px-6 py-4 rounded-xl bg-[var(--accent-purple)] hover:bg-[#a855f7] text-white text-base font-semibold shadow-[inset_0_-2px_4px_rgba(0,0,0,0.2)] transition-all flex items-center justify-center gap-2"
+                  >
+                    {wallet.connecting ? "Connecting..." : "Connect Wallet to Unlock"}
+                  </button>
+                )}
               </div>
             </motion.div>
           ) : (
@@ -204,19 +281,19 @@ export default function DashboardApp() {
               <div className="glass-panel w-full relative overflow-hidden flex flex-col items-center justify-center py-16">
                 <div 
                   className={`absolute w-[400px] h-[400px] rounded-full blur-[120px] opacity-20 pointer-events-none transition-colors duration-1000 ${
-                    sentinelEnabled ? "bg-[var(--accent-cyan)]" : "bg-[var(--accent-purple)]"
+                    sentinexEnabled ? "bg-[var(--accent-cyan)]" : "bg-[var(--accent-purple)]"
                   }`} 
                 />
                 
                 <div className="relative z-10 flex flex-col items-center">
                   {/* Status Indicator */}
                   <div className="relative mb-8">
-                    {sentinelEnabled && (
+                    {sentinexEnabled && (
                       <div className="absolute inset-0 rounded-full animate-ping bg-[var(--accent-cyan)] opacity-20" />
                     )}
                     <div 
                       className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-700 ${
-                        sentinelEnabled 
+                        sentinexEnabled 
                           ? "bg-[rgba(6,182,212,0.1)] shadow-[0_0_40px_rgba(6,182,212,0.4)] border border-[rgba(6,182,212,0.3)] text-[var(--accent-cyan)]" 
                           : "bg-[rgba(255,255,255,0.03)] border border-[var(--border-subtle)] text-[var(--text-muted)]"
                       }`}
@@ -226,25 +303,25 @@ export default function DashboardApp() {
                   </div>
 
                   <h2 className="text-3xl font-bold text-white tracking-tight mb-2">
-                    {sentinelEnabled ? "Guardian is Active" : "Guardian is Standby"}
+                    {sentinexEnabled ? "Guardian is Active" : "Guardian is Standby"}
                   </h2>
                   <p className="text-[var(--text-muted)] text-sm mb-10 max-w-md text-center">
-                    {sentinelEnabled 
+                    {sentinexEnabled 
                       ? "AI is actively monitoring market sentiment and will execute swaps on your behalf." 
                       : "System is offline. Your vault is secured and awaiting activation."}
                   </p>
 
                   {/* Master Toggle */}
                   <button 
-                    onClick={toggleSentinel}
+                    onClick={toggleSentinex}
                     disabled={loading}
                     className={`w-24 h-12 rounded-full relative p-1 ios-switch-track ${
-                      sentinelEnabled ? "bg-gradient-to-r from-[var(--accent-cyan)] to-blue-500" : "bg-[rgba(255,255,255,0.1)]"
+                      sentinexEnabled ? "bg-gradient-to-r from-[var(--accent-cyan)] to-blue-500" : "bg-[rgba(255,255,255,0.1)]"
                     }`}
                   >
                     <div 
                       className={`w-10 h-10 bg-white rounded-full shadow-md ios-switch-thumb ${
-                        sentinelEnabled ? "translate-x-12" : "translate-x-0"
+                        sentinexEnabled ? "translate-x-12" : "translate-x-0"
                       }`} 
                     />
                   </button>
@@ -328,7 +405,7 @@ export default function DashboardApp() {
               
               <div className="flex justify-between items-center px-6 py-4 border-b border-[var(--border-subtle)] bg-[rgba(255,255,255,0.01)]">
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Execution Terminal</h3>
-                <RefreshCw size={16} className={`text-[var(--accent-cyan)] ${sentinelEnabled ? "animate-spin" : "opacity-50"}`} />
+                <RefreshCw size={16} className={`text-[var(--accent-cyan)] ${sentinexEnabled ? "animate-spin" : "opacity-50"}`} />
               </div>
 
               <div className="flex-1 overflow-y-auto terminal-scroll flex flex-col-reverse p-4 bg-[#0a0a0c]">

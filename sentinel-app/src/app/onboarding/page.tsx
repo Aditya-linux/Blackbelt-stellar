@@ -12,7 +12,7 @@ export default function OnboardingPage() {
 
   // If already onboarded, redirect to app instantly
   useEffect(() => {
-    if (localStorage.getItem("sentinel_onboarded") === "true") {
+    if (localStorage.getItem("sentinex_onboarded") === "true") {
       router.push("/app");
     }
   }, [router]);
@@ -21,25 +21,31 @@ export default function OnboardingPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc7aisi21084r17HCsoSALUL83hGUegpmnSTG4o4Zlkydw6wA/formResponse";
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScr55kDQmwDk_pbQUCdLJ23h_J0VYCHHrbzhcj5MfMI2nBszQ/formResponse";
     
-    // Construct form data using the Google Form entry IDs
+    // Construct form data using the new Google Form entry IDs
     const submitData = new FormData();
-    submitData.append("entry.1935717222", formData.name);
-    submitData.append("entry.65272811", formData.email);
-    
-    // Map our internal experience values to exactly match the Google Form options
-    let experienceValue = "Beginner (Familiar with basic concepts like wallets and staking)";
-    if (formData.experience === "intermediate") {
-      experienceValue = "Intermediate (Have actively used several DeFi protocols like DEXs, lending platforms, or yield farms)";
-    } else if (formData.experience === "expert") {
-      experienceValue = "Expert/Developer (Contribute to protocol development or complex financial strategies)";
-    }
-    submitData.append("entry.750431412", experienceValue);
+    submitData.append("entry.1522916033", formData.name);       // Full Name
+    submitData.append("entry.1078632518", formData.email);      // Email Address
+    submitData.append("entry.237006384", "");                   // Wallet Address (filled later on connect)
 
-    // Provide default values for the other required fields in the Google Form
-    submitData.append("entry.1720479390", "Using Stablecoins and earning interest");
-    submitData.append("entry.1205651400", "4");
+    // Use case checkbox (pick a sensible default)
+    submitData.append("entry.931903387", "Risk Monitoring/Alerts");
+
+    // Rate overall functionality (1-10 scale)
+    submitData.append("entry.624241954", "8");
+
+    // Rate platform aspects (grid: each row is a separate entry)
+    submitData.append("entry.136069121", "Satisfied");     // Ease of Setting up Protection Rules
+    submitData.append("entry.2074921906", "Satisfied");    // Clarity of Risk Reports and Dashboards
+    submitData.append("entry.1713952310", "Satisfied");    // Speed and Reliability of Execution
+    submitData.append("entry.887526598", "Satisfied");     // User Interface and Experience (UI/UX)
+
+    // Recommend Sentinex (1-5 scale)
+    submitData.append("entry.2076904418", "4");
+
+    // Features/improvements (paragraph - optional)
+    submitData.append("entry.1700914512", "");
 
     try {
       await fetch(formUrl, {
@@ -49,7 +55,7 @@ export default function OnboardingPage() {
       });
       
       // Successfully submitted
-      localStorage.setItem("sentinel_onboarded", "true");
+      localStorage.setItem("sentinex_onboarded", "true");
       router.push("/app");
     } catch (error) {
       console.error("Error submitting to Google Forms:", error);
@@ -76,7 +82,7 @@ export default function OnboardingPage() {
 
           <h1 className="text-2xl font-bold text-white tracking-tight mb-2">Request Early Access</h1>
           <p className="text-[var(--text-muted)] text-sm mb-8 leading-relaxed">
-            Sentinel is currently in private beta. Please submit your details to join the whitelist and access the autonomous dashboard.
+            Sentinex is currently in private beta. Please submit your details to join the whitelist and access the autonomous dashboard.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">

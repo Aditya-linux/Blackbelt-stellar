@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Configuration
+// Sentinex Service -- Configuration
 // ---------------------------------------------------------------------------
 
 import dotenv from "dotenv";

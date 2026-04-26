@@ -19,7 +19,7 @@ export default function LandingPage() {
         <div className="mb-12 inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-charcoal)]">
           <div className="w-2 h-2 rounded-full bg-[var(--accent-purple)] animate-pulse shadow-[0_0_8px_var(--accent-purple-glow)]" />
           <span className="text-xs font-medium text-[var(--text-muted)] tracking-wide">
-            Sentinel v1.0 is Live on Stellar
+            Sentinex v1.0 is Live on Stellar
           </span>
         </div>
 

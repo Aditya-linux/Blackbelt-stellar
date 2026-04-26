@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Type Definitions
+// Sentinex Service -- Type Definitions
 // ---------------------------------------------------------------------------
 
 export interface SentimentResult {
@@ -39,7 +39,7 @@ export interface TradeExecution {
   log_message: string;
 }
 
-export interface SentinelState {
+export interface SentinexState {
   status: "sleeping" | "analyzing" | "executing";
   last_scan: string | null;
   active_risk_profile: RiskProfile;

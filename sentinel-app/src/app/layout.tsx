@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sentinel | Non-Custodial DeFi Guardian",
+  title: "Sentinex | Non-Custodial DeFi Guardian",
   description:
     "AI-powered non-custodial DeFi dashboard that analyzes financial news sentiment and executes asset swaps on the Stellar network.",
   keywords: ["DeFi", "Stellar", "Soroban", "AI", "Sentiment", "Non-Custodial"],

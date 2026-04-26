@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Structured Logger with WebSocket broadcast
+// Sentinex Service -- Structured Logger with WebSocket broadcast
 // ---------------------------------------------------------------------------
 
 import { WebSocketServer, WebSocket } from "ws";

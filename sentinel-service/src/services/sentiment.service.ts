@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sentinel Service -- Sentiment Analysis (OpenAI API)
+// Sentinex Service -- Sentiment Analysis (OpenAI API)
 // ---------------------------------------------------------------------------
 
 import OpenAI from "openai";
