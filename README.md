@@ -9,9 +9,9 @@
 </div>
 
 ## 🔗 Submission Links
-- **Live Demo**: [https://sentinex.vercel.app](https://sentinex.vercel.app) *(Placeholder - Update with your actual URL)*
-- **Public Repository**: [https://github.com/aditya/sentinex](https://github.com/aditya/sentinex) *(Placeholder - Update with your actual URL)*
-- **Community Contribution**: [View Twitter Post](https://twitter.com/yourhandle/status/123456789) *(Placeholder - Update with your actual URL)*
+- **Live Demo**: [https://sentinex.vercel.app](https://sentinex.vercel.app) 
+- **Public Repository**: [https://github.com/aditya/sentinex](https://github.com/aditya/sentinex) 
+- **Community Contribution**: [View Twitter Post](https://twitter.com/yourhandle/status/123456789) 
 - **Security Checklist**: [SECURITY_CHECKLIST.md](file:///c:/Users/Aditya/OneDrive/Desktop/Blackbelt/SECURITY_CHECKLIST.md)
 
 ## 📊 Performance & Monitoring
