@@ -6,7 +6,7 @@ Sentinex is an AI-driven, non-custodial portfolio management platform built on t
 
 - **Live Demo**: [https://sentinex.vercel.app](https://sentinex.vercel.app)
 - **Public Repository**: [https://github.com/Aditya-linux/Blackbelt-stellar](https://github.com/Aditya-linux/Blackbelt-stellar)
-- **Community Contribution**: [View Twitter Post](https://twitter.com/yourhandle/status/123456789)
+- **Community Contribution**: [View Twitter Post](https://x.com/AdityaNishad987/status/2048324593925214274?s=20)
 - **Security Checklist**: [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
 
 ## Project Video Demonstration
