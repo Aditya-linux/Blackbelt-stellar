@@ -35,16 +35,6 @@ Sentinex continuously monitors financial news sources. The sentiment engine proc
 
 ![News Feed](docs/images/news_feed.png)
 
-### 3. Autonomous Monitoring and Execution
-Once activated, the AI Guardian operates in the background. The execution terminal provides a transparent view of the AI's logic, sentiment scores, and on-chain transaction status.
-
-![Live Monitoring](docs/images/monitoring.png)
-
-### 4. Portfolio Analytics
-Users can monitor their asset allocations and performance metrics in real-time through the dedicated dashboard.
-
-![Portfolio Metrics](docs/images/metrics.png)
-
 ---
 
 ## User Adoption and Feedback
