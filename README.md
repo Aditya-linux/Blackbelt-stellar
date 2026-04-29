@@ -5,7 +5,7 @@ Sentinex is an AI-driven, non-custodial portfolio management platform built on t
 ## Submission Links
 
 - **Live Demo**: [https://sentinex.vercel.app](https://sentinex.vercel.app)
-- **Public Repository**: [https://github.com/aditya/sentinex](https://github.com/aditya/sentinex)
+- **Public Repository**: [https://github.com/Aditya-linux/Blackbelt-stellar](https://github.com/Aditya-linux/Blackbelt-stellar)
 - **Community Contribution**: [View Twitter Post](https://twitter.com/yourhandle/status/123456789)
 - **Security Checklist**: [SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)
 
@@ -28,17 +28,31 @@ A complete walk-through of the project, including the AI Guardian's autonomous e
 ### 1. Seamless Onboarding
 The platform integrates with the Freighter wallet to provide a secure and simple connection process. Users can quickly link their Stellar accounts and prepare their vault for the AI Guardian.
 
-![User Onboarding](./assets/onboarding.png)
+![User Onboarding](docs/images/onboarding.png)
 
 ### 2. Live Market Intelligence
 Sentinex continuously monitors financial news sources. The sentiment engine processes these feeds to identify market trends before they manifest in price movements.
 
-![News Feed](./assets/news_feed.png)
+![News Feed](docs/images/news_feed.png)
 
 ### 3. Autonomous Monitoring and Execution
 Once activated, the AI Guardian operates in the background. The execution terminal provides a transparent view of the AI's logic, sentiment scores, and on-chain transaction status.
 
-![Live Monitoring](./assets/monitoring.png)
+![Live Monitoring](docs/images/monitoring.png)
+
+### 4. Portfolio Analytics
+Users can monitor their asset allocations and performance metrics in real-time through the dedicated dashboard.
+
+![Portfolio Metrics](docs/images/metrics.png)
+
+---
+
+## User Adoption and Feedback
+
+Sentinex has successfully onboarded a growing community of users during its testnet phase. We prioritize user experience and actively collect feedback to refine the AI Guardian's logic and the platform's interface.
+
+- **Waitlist and Feedback Form**: [Fill out the survey](https://docs.google.com/forms/d/e/1FAIpQLScr55kDQmwDk_pbQUCdLJ23h_J0VYCHHrbzhcj5MfMI2nBszQ/viewform)
+- **Live User Adoption Tracking**: [View onboarded wallets and feedback](https://docs.google.com/spreadsheets/d/1EU0KEYZUv8TKHG7WjsOcW3XtQenqOLbDcjrCkFdVqlY/edit?resourcekey=&gid=106980268#gid=106980268)
 
 ---
 
